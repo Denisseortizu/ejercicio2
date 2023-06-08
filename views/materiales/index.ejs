@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Materiales</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body class="container" style="margin-top: 50px;">
+    <% if (messages.success) { %>
+    <div class="alert alert-success" role="alert"><%- messages.success %></div>
+    <% } %>
+
+    <% if (messages.error) { %>
+    <div class="alert alert-danger" role="alert"><%- messages.error %></div>
+    <% } %>
+
+    <div class="card"> 
+        <div class="card-header">
+            <ul class="nav nav-pills w-100">
+                <li class="nav-pill active">
+                    <a class="nav-link">Materiales</a>
+                </li>
+                <li class="nav-pill ml-auto">
+                    <a class="nav-link active" href="/materiales/add">Agregar Material</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <form action="/materiales/search" method="GET" class="mb-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Buscar por nombre">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                    </div>
+                </div>
+            </form>
+          
+            <% if(data.length) { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Unidad de Medida</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Total</th>
+                        <th width="200px">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% for(var i = 0; i< data.length; i++) { %>
+                    <tr>
+                        <th scope="row"><%= (i+1) %></th>
+                        <td><%= data[i].nombre%></td>
+                        <td><%= data[i].unidad_de_medida%></td>
+                        <td><%= data[i].precio%></td>
+                        <td><%= data[i].stock%></td>
+                        <td><%= data[i].total%></td>
+                        <td>
+                            <a class="btn btn-success edit" href="../materiales/edit/<%=data[i].id%>">Editar</a>
+                            <% if(data[i].stock === 0) { %>
+                                <a class="btn btn-danger delete" onclick="return confirm('Seguro que quieres borrar este material?')" href="../materiales/delete/<%=data[i].id%>">Borrar</a> 
+                            <% } else { %>
+                                <a class="btn btn-danger delete disabled" onclick="return false;" href="#">Borrar</a>
+                            <% } %>
+                        </td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <% } %>
+   
+        <% if(!data.length) { %>
+            <p class="text-center">No se han encontrado materiales!</p>
+        <% } %>
+        </div>
+    </div>
+</body>
+</html>
